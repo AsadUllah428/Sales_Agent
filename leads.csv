@@ -1,0 +1,8 @@
+lead_id,name,age,country,interest,status,last_agent_msg_ts,follow_up_sent_flag
+L1ACFB812,john,45,india,sales,secured,2025-04-30T06:38:16.353023+00:00,False
+L816A4EA9,jack,22,pakistan,,awaiting_interest,2025-04-30T06:39:30.071055+00:00,True
+L0B17F2D4,sana,,,,awaiting_consent,2025-04-30T06:47:04.052657+00:00,True
+L3DD4E6FE,debaj,22,pakistan,sales,secured,2025-04-30T06:51:44.829959+00:00,False
+L9262EDC9,ok,,,,awaiting_consent,2025-04-30T06:52:52.712074+00:00,True
+L3CC6872C,sana,63,usa,usa,error,2025-04-30T06:53:22.756839+00:00,True
+LFC54C976,jack,45,china,cloud,secured,2025-04-30T06:53:46.190701+00:00,False
