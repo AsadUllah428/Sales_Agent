@@ -1,0 +1,153 @@
+manifest:
+  version: "0.1.3"
+  schema: https://a2as.org/cert/schema
+  subject:
+    name: asadullah428/sales_agent
+    source: https://github.com/asadullah428/sales_agent
+    branch: main
+    commit: "846c8a89"
+    scope: [agent.py, lead_manager.py, main.py]
+  issued:
+    by: A2AS.org
+    at: '2026-02-11T16:55:01Z'
+    url: https://a2as.org/certified/agents/asadullah428/sales_agent
+  signatures:
+    digest: sha256:cLX1B4tksDpx9geBBlk1iN4Wlpf3Jyp9wctNpkZofE4
+    key: ed25519:19dmHjptOx-SW0uGBF6JxhbKKbQGGejYytZofBhcOzI
+    sig: ed25519:eDaw3JxIwCrRnPHP66gxeiKqTcFklzZYgDGQdpcWMhvsB83_ZzS3mVfnefmFVAxEMH6chj7q1d-gtZrnQSciCA
+
+agents:
+  sales_agent.0:
+    type: instance
+    models: [gemini-2.5-flash]
+    params:
+      name: SalesAgent
+      function: run_sales_agent
+      instance: sales_agent
+  sales_agent.1:
+    type: instance
+    models: [gemini-2.5-flash]
+    params:
+      class: SalesAgent
+      base: BaseAgent
+      name: name
+      instance: sales_agent
+
+models:
+  gemini-2.5-flash:
+    type: default
+    agents: [sales_agent.0, sales_agent.1]
+
+imports:
+  Any: typing.Any
+  APP_NAME: config.APP_NAME
+  AsyncGenerator: typing.AsyncGenerator
+  BaseAgent: google.adk.agents.BaseAgent
+  copy: copy
+  csv: csv
+  CSV_FILENAME: config.CSV_FILENAME
+  DataManager: lead_manager.DataManager
+  datetime: datetime.datetime
+  Dict: typing.Dict
+  Event: google.adk.events.Event
+  EventActions: google.adk.events.EventActions
+  FOLLOW_UP_CHECK_INTERVAL_SECONDS: config.FOLLOW_UP_CHECK_INTERVAL_SECONDS
+  genai_types: google.genai.types
+  GOOGLE_CREDENTIALS_PATH: config.GOOGLE_CREDENTIALS_PATH
+  InMemorySessionService: google.adk.sessions.InMemorySessionService
+  InvocationContext: google.adk.agents.invocation_context.InvocationContext
+  List: typing.List
+  LOG_FILE: config.LOG_FILE
+  LOG_FORMAT: config.LOG_FORMAT
+  LOG_LEVEL: config.LOG_LEVEL
+  logging: logging
+  Optional: typing.Optional
+  os: os
+  Runner: google.adk.runners.Runner
+  SalesAgent: agent.SalesAgent
+  SIMULATED_DELAY_SECONDS: config.SIMULATED_DELAY_SECONDS
+  sys: sys
+  threading: threading
+  time: time
+  timedelta: datetime.timedelta
+  timezone: datetime.timezone
+  uuid: uuid
+
+functions:
+  __init__:
+    type: sync
+    module: lead_manager
+    args: [self, filename]
+  _initialize_csv:
+    type: sync
+    module: lead_manager
+    args: [self]
+  _read_all:
+    type: sync
+    module: lead_manager
+    args: [self]
+    params:
+      returns: List[Dict]
+  _run_async_impl:
+    type: async
+    module: agent
+    args: [self, ctx]
+    params:
+      returns: AsyncGenerator
+  _write_all:
+    type: sync
+    module: lead_manager
+    args: [self, data]
+  _yield_response:
+    type: sync
+    module: agent
+    args: [self, text, state_delta]
+    params:
+      returns: Event
+  follow_up_checker:
+    type: sync
+    module: main
+    args: [data_manager_instance, session_service, runner_instance]
+  generate_lead_id:
+    type: sync
+    module: lead_manager
+    args: [self]
+    params:
+      returns: str
+  get_all_active_leads_for_followup:
+    type: sync
+    module: lead_manager
+    args: [self]
+    params:
+      returns: List[Dict]
+  get_lead_data:
+    type: sync
+    module: lead_manager
+    args: [self, lead_id]
+  run_sales_agent:
+    type: sync
+    module: main
+  set_data_manager:
+    type: sync
+    module: agent
+    args: [self, data_manager]
+  setup_logging:
+    type: sync
+    module: main
+  update_lead:
+    type: sync
+    module: lead_manager
+    args: [self, lead_data]
+
+variables:
+  GOOGLE_APPLICATION_CREDENTIALS:
+    type: env
+    params:
+      caller: [os.environ]
+
+files:
+  csvfile:
+    type: variable
+    actions: [read]
+    params:
+      caller: [csv.DictWriter, csv.DictReader]
